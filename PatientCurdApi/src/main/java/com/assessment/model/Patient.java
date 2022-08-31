@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 
 @Entity
 @Table
@@ -12,10 +14,15 @@ public class Patient {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+	@NotNull
 	private String name;
+	@NotNull
 	private String phone;
+	@NotNull
 	private String disease;
+	@NotNull
 	private String bedNo;
+	@NotNull
 	private String address;
 
 	public int getId() {

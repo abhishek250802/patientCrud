@@ -2,14 +2,10 @@ package com.assessment.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.assessment.exception.MareezAlreadyExist;
+
 import com.assessment.model.Patient;
 import com.assessment.model.PatientModel;
 import com.assessment.repository.PatientRepository;
@@ -18,19 +14,17 @@ import com.assessment.service.PatientService;
 
 @Service
 public class PatientServiceImpl implements PatientService {
-	@Autowired
-	PatientRepository patientRepository1;
+
 
 	private final PatientRepository patientRepository;
 	
 	PatientServiceImpl(PatientRepository patientRepository) {
-		this.patientRepository = null;
-		this.patientRepository1 = patientRepository;
+		this.patientRepository = patientRepository;
 	}
 	@Override
 	public List<PatientModel> getAllPatients() {
 		List<Patient> patients = new ArrayList<Patient>();
-		patientRepository1.findAll().forEach((patient) -> patients.add(patient));
+		patientRepository.findAll().forEach((patient) -> patients.add(patient));
 		List<PatientModel> patientsModel = new ArrayList<PatientModel>();
 		
 		for (Patient p : patients) {
@@ -48,7 +42,7 @@ public class PatientServiceImpl implements PatientService {
 	}
 	@Override
 	public PatientModel getPatientsById(int id) {
-		Patient patient = patientRepository1.findById(id).get();
+		Patient patient = patientRepository.findById(id).get();
 		
 		PatientModel pm = new PatientModel();
 		pm.setId(patient.getId());
@@ -61,24 +55,21 @@ public class PatientServiceImpl implements PatientService {
 	}
 	
 	@Override
-	public PatientModel createPatient(@Valid PatientModel patientModel) {
-		Patient p = patientRepository1.findById(patientModel.getId()).get();
-		if(Objects.nonNull(p)) {
-			throw new MareezAlreadyExist("Mareez Already Exist with id : "+p.getId());
-				}
+	public PatientModel createPatient( PatientModel patientModel) {
+//		Patient p = patientRepository.findById(patientModel.getId()).get();
+//		if(Objects.nonNull(p)) {
+//			throw new MareezAlreadyExist("Mareez Already Exist with id : "+p.getId());
+//				}
 		Patient patient = new Patient();
 		patient.setName(patientModel.getName());
 		patient.setPhone(patientModel.getPhone());
 	    patient.setDisease(patientModel.getDisease());
 	    patient.setBedNo(patientModel.getBedNo());
 	    patient.setAddress(patientModel.getAddress());
-	    patientRepository1.save(patient);
+	    patientRepository.save(patient);
 		return patientModel;
 	}
 	
-	public PatientServiceImpl() {
-	this.patientRepository = null;
-	this.patientRepository1 = null;}
 	
 
 
@@ -86,7 +77,7 @@ public class PatientServiceImpl implements PatientService {
 	public PatientModel updatePatient(int id, PatientModel patientDetails) {
 		Patient updatePatient = null;
 	
-		updatePatient = patientRepository1.findById(id).get();
+		updatePatient = patientRepository.findById(id).get();
 		
 		updatePatient.setName(patientDetails.getName());
 		updatePatient.setPhone(patientDetails.getPhone());
@@ -94,12 +85,12 @@ public class PatientServiceImpl implements PatientService {
 		updatePatient.setBedNo(patientDetails.getBedNo());
 		updatePatient.setAddress(patientDetails.getAddress());
 		
-		patientRepository1.save(updatePatient);
+		patientRepository.save(updatePatient);
 		return patientDetails;
 	}
 	@Override
 	public int deletePatientsById(int id) {
-		patientRepository1.deleteById(id);
+		patientRepository.deleteById(id);
 		return id;
 	}
 	@Override

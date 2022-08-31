@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 			return errors;
 		}
 
+		
 		@ResponseStatus(HttpStatus.BAD_REQUEST)
 		@ExceptionHandler(RollbackException.class)
 		public Map<String, String> handelRollBackExceptions(RollbackException ex) {
