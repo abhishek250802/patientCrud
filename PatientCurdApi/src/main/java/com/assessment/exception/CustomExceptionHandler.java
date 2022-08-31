@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 			Map<String, String> errors = new HashMap<>();
 			ex.getBindingResult().getFieldErrors()
 					.forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-			;
+			
 			return errors;
 		}
 
