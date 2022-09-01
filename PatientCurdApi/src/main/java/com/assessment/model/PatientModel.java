@@ -1,12 +1,19 @@
 package com.assessment.model;
 
+import javax.validation.constraints.NotNull;
+
 public class PatientModel {
 
 	private int id;
+	@NotNull
 	private String name;
+	@NotNull
 	private String phone;
+	@NotNull
 	private String disease;
+	@NotNull
 	private String bedNo;
+	@NotNull
 	private String address;
 	
 	public int getId() {
