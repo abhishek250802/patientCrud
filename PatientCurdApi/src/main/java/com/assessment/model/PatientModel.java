@@ -1,9 +1,11 @@
 package com.assessment.model;
 
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 public class PatientModel {
 
+        @Id
 	private int id;
 	@NotNull
 	private String name;

@@ -10,14 +10,13 @@ public interface PatientService {
 
 	PatientModel getPatientsById(int id);
 
-	PatientModel createPatient(PatientModel patientModel);
+	boolean createPatient(PatientModel patientModel);
 
-	PatientModel updatePatient(int id, PatientModel patientDetails);
 
-	int deletePatientsById(int id);
+	boolean deletePatientsById(int id);
 
-	PatientModel getPatientsById();
+	boolean updatePatient(PatientModel patientDetails);
 
-	
+
 
 }

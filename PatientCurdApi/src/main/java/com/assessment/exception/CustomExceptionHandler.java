@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 		@ExceptionHandler(RollbackException.class)
 		public Map<String, String> handelRollBackExceptions(RollbackException ex) {
 			Map<String, String> errors = new HashMap<>();
-			errors.put("error", ex.getMessage());
+			errors.put("null", ex.getMessage());
 			return errors;
 		}
 
@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 		@ExceptionHandler(ConstraintViolationException.class)
 		public Map<String, String> handelConstraintViolationException(ConstraintViolationException ex) {
 			Map<String, String> errors = new HashMap<>();
-			errors.put("error", ex.getMessage());
+			errors.put("null", ex.getMessage());
 			return errors;
 		}
 		
@@ -45,7 +45,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 		@ExceptionHandler(MareezAlreadyExist.class)
 		public Map<String, String> handelMareezAlreadyExist(MareezAlreadyExist ex) {
 			Map<String, String> errors = new HashMap<>();
-			errors.put("error", ex.getMessage());
+			errors.put("null", ex.getMessage());
 			return errors;
 		}
 

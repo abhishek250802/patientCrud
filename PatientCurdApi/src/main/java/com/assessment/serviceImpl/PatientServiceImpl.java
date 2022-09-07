@@ -2,10 +2,13 @@ package com.assessment.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-
+import com.assessment.exception.MareezAlreadyExist;
+import com.assessment.exception.MareezNotExist;
 import com.assessment.model.Patient;
 import com.assessment.model.PatientModel;
 import com.assessment.repository.PatientRepository;
@@ -23,9 +26,8 @@ public class PatientServiceImpl implements PatientService {
 	}
 	@Override
 	public List<PatientModel> getAllPatients() {
-		List<Patient> patients = new ArrayList<Patient>();
-		patientRepository.findAll().forEach((patient) -> patients.add(patient));
-		List<PatientModel> patientsModel = new ArrayList<PatientModel>();
+		List<Patient> patients = patientRepository.findAll();
+		List<PatientModel> patientsModel = new ArrayList<>();
 		
 		for (Patient p : patients) {
 			PatientModel pm = new PatientModel();
@@ -42,8 +44,11 @@ public class PatientServiceImpl implements PatientService {
 	}
 	@Override
 	public PatientModel getPatientsById(int id) {
-		Patient patient = patientRepository.findById(id).get();
-		
+		Optional<Patient> p = patientRepository.findById(id);
+		if (!p.isPresent())
+		    throw new MareezNotExist("Mareez doesn't exist with id :" +id);
+	   
+		Patient patient = p.get();    
 		PatientModel pm = new PatientModel();
 		pm.setId(patient.getId());
 		pm.setName(patient.getName());
@@ -55,55 +60,53 @@ public class PatientServiceImpl implements PatientService {
 	}
 	
 	@Override
-	public PatientModel createPatient( PatientModel patientModel) {
-//		Patient p = patientRepository.findById(patientModel.getId()).get();
-//		if(Objects.nonNull(p)) {
-//			throw new MareezAlreadyExist("Mareez Already Exist with id : "+p.getId());
-//				}
+	public boolean createPatient( PatientModel patientModel) {
+		Patient p = patientRepository.findById(patientModel.getId()).get();
+		if(Objects.nonNull(p)) {
+			throw new MareezAlreadyExist("Mareez Already Exist with id : "+p.getId());
+				}
 		Patient patient = new Patient();
 		patient.setName(patientModel.getName());
 		patient.setPhone(patientModel.getPhone());
-	    patient.setDisease(patientModel.getDisease());
-	    patient.setBedNo(patientModel.getBedNo());
-	    patient.setAddress(patientModel.getAddress());
+	        patient.setDisease(patientModel.getDisease());
+	        patient.setBedNo(patientModel.getBedNo());
+	        patient.setAddress(patientModel.getAddress());
+	        try {
 	    patientRepository.save(patient);
-		return patientModel;
+		return true;
+	        } catch (Exception ex)  {
+	            return false;
+	        }
 	}
 	
-	
-
-
 	@Override
-	public PatientModel updatePatient(int id, PatientModel patientDetails) {
-		Patient updatePatient = null;
-	
-		updatePatient = patientRepository.findById(id).get();
-		
-		updatePatient.setName(patientDetails.getName());
-		updatePatient.setPhone(patientDetails.getPhone());
-		updatePatient.setDisease(patientDetails.getDisease());
-		updatePatient.setBedNo(patientDetails.getBedNo());
-		updatePatient.setAddress(patientDetails.getAddress());
-		
-		patientRepository.save(updatePatient);
-		return patientDetails;
+	public boolean updatePatient(PatientModel patientDetails) {
+	    Optional<Patient> updatePatient = patientRepository.findById(patientDetails.getId());
+		Patient update= null;
+	if
+	(updatePatient.isPresent()) {
+		update = updatePatient.get();
+		update.setName(patientDetails.getName());
+		update.setPhone(patientDetails.getPhone());
+		update.setDisease(patientDetails.getDisease());
+		update.setBedNo(patientDetails.getBedNo());
+		update.setAddress(patientDetails.getAddress());
+		patientRepository.save(update);
+		return true;
 	}
+	        return false;
+	}
+	
 	@Override
-	public int deletePatientsById(int id) {
+	public boolean deletePatientsById(int id) {
+	    if (patientRepository.findById(id).isPresent()) {
 		patientRepository.deleteById(id);
-		return id;
+		return true;
+	    }
+	   throw new MareezNotExist("Delete nahi ho payega q ki koi mareez nhi hai is id s : " +id);
 	}
-	@Override
-	public PatientModel getPatientsById() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public PatientRepository getPatientRepository() {
-		return patientRepository;
-	}
-	
-	
 }
+
 	
 	
 	
