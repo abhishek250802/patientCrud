@@ -1,4 +1,4 @@
-package com.assessment.model;
+package com.assessment.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

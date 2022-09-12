@@ -7,9 +7,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.assessment.entity.Patient;
 import com.assessment.exception.MareezAlreadyExist;
 import com.assessment.exception.MareezNotExist;
-import com.assessment.model.Patient;
 import com.assessment.model.PatientModel;
 import com.assessment.repository.PatientRepository;
 import com.assessment.service.PatientService;
